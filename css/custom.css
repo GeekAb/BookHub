@@ -16,6 +16,9 @@
 
 .detail-sec{text-align: left;background-color: white;position: fixed;height: 80%;width: 49%;overflow: hidden;float: right;right: 20px;}
 .detail-sec h4{font-weight: bold;margin-bottom: 10px;}
+
+.share-section{position: fixed; bottom: 20px;text-align: center;}
+
 .navbar.navbar-inverse{background-color: black}
 .logo{height: 40px; width: auto;}
 
