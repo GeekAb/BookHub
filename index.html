@@ -24,6 +24,7 @@
 
     <!-- Custom CSS -->
     <link href="css/heroic-features.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,29 +32,6 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>
-        .hero-feature{padding-left: 10px;padding-right: 10px;margin-bottom: 10px;}
-        .bookmark-icon{position: absolute; top: -4px; right: 5px;color:#03a9f4;}
-        .check-detail{padding-right: 10px;}
-        .book-price{font-size: 22px;font-weight: bold;color:#03a9f4;padding-left: 10px;}
-        .shadowed {
-            border-radius: 2px;
-            border: 0;
-            -webkit-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12);
-            box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12);
-        }
-        .thumbnail img{height: 250px;width:auto;}
-        .thumbnail p.desc{height: 80px;overflow: hidden;}
-        .thumbnail h3{font-size: 13px;height: 30px;font-weight: 900;}
-        .thumbnail.selected {background-color: #ddd;}
-        
-        .detail-sec{text-align: left;background-color: white;position: fixed;height: 80%;width: 49%;overflow: hidden;float: right;right: 20px;}
-        .detail-sec h4{font-weight: bold;margin-bottom: 10px;}
-        .navbar.navbar-inverse{background-color: black}
-        .logo{height: 40px; width: auto;}
-        
-        .no-padding{padding:0px;}
-    </style>
 </head>
 
 <body>
@@ -73,17 +51,6 @@
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="navbar-collapse collapse navbar-inverse-collapse">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">About</a>
-                    </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
-                    </li>
-                </ul>
                 <form class="navbar-form navbar-right">
                   <div class="form-group is-empty">
                     <input type="text" class="form-control col-md-12 search-book-input" placeholder="Search Name/Author">
@@ -97,19 +64,6 @@
 
     <!-- Page Content -->
     <div class="container">
-
-        <!-- Jumbotron Header -->
-<!--
-        <header class="jumbotron hero-spacer">
-            <h1>A Warm Welcome!</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p>
-            <p><a class="btn btn-primary btn-large">Call to action!</a>
-            </p>
-        </header>
-
-        <hr>
--->
-
         <!-- Title -->
         <div class="row">
             <div class="col-lg-12">
@@ -140,6 +94,10 @@
                 </div>
                 <!--Other detail section ends here-->
                 
+                <!--Section will hold help text and other important details-->
+                <div class='help-section'>
+                    
+                </div>
             </div>
         </div>
         <!-- /.row -->
@@ -150,7 +108,7 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; BookHub 2016</p>
                 </div>
             </div>
         </footer>
@@ -169,69 +127,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
     
     <script src="js/app.js"></script>
+    <script src="js/main.js"></script>
     
-    <!--Actual code-->
-    
-    <script>
-        App.init();
-        
-        App.callAPI('book-list', '?type=json&query=list_books', 
-                    {
-                        authCheck: false, 
-                        successCallback : bookListSuccess,
-                        errorCallback : bookListFail,
-                    });
-        
-        function bookListSuccess (data) {
-            
-            data.detail = function () {
-                return JSON.stringify(this);
-            }
-            /*Loading trips template and rendering data*/
-            var template = $('#bookinfo-template').html();
-            /*Loading template and pushing data to it*/
-            var rendered = Mustache.to_html(template, data);
-            $("#all-books").html(rendered);
-            
-            $.material.init();
-            
-            /*Bind actions*/
-            bindActions();
-        }
-        
-        function bookListFail (data) {
-            console.log(data);
-        }
-        
-        function bindActions() {
-            $('.check-detail').unbind('click').bind('click', function () {
-                
-                var id = $(this).attr('id').split('-')[1];
-                $('.thumbnail').removeClass('selected');
-                $('#'+id+' .thumbnail').addClass('selected');
-                
-                var details = $('#'+id).data('details');
-                
-                var template = $('#bookinfo-details-template').html();
-                /*Loading template and pushing data to it*/
-                var rendered = Mustache.to_html(template, details);
-                $("#book-details").html(rendered);
-               
-            });
-        }
-        
-        function searchBooks (value) {
-            $(".book-element").each(function () {
-                if ($(this).text().search(value) > -1) {
-                    $(this).show();
-                } else {
-                    $(this).hide();
-                }
-            });
-        }
-    </script>
-    
-    <!--Templates-->
+    <!--Book listing Templates-->
     <script id='bookinfo-template' type='x-tmpl-mustache'>
         {{#books}}
         <div class="col-md-6 col-sm-12 hero-feature book-element" id='{{id}}' data-details='{{detail}}'>
@@ -256,9 +154,25 @@
         {{/books}}
     </script>
     
+    <!--Book details template-->
     <script id='bookinfo-details-template' type='x-tmpl-mustache'>
-        <h4>{{author}}</h4>
-        <p>{{description}}</p>        
+        <h3>{{name}}</h3>
+        <h4 class='text-right'>-- {{author}}</h4>
+        <div class='text-right'>{{{f_rating}}}</div>
+        <p>{{description}}</p>
+        
+        <div class='col-md-12 no-padding'>
+            <div class='col-md-4 col-sm-6 no-padding other-title'>Publisher </div>
+            <div class='col-md-8'>{{details.Publisher}}</div>
+        </div>
+        <div class='col-md-12 no-padding'>
+            <div class='col-md-4 col-sm-6 no-padding other-title'>ISBN Number </div>
+            <div class='col-md-8'>#{{details.ISBN}}</div>
+        </div>
+        <div class='col-md-12 no-padding'>
+            <div class='col-md-4 col-sm-6 no-padding other-title'>Binding </div>
+            <div class='col-md-8'>{{details.Binding}}</div>
+        </div>
     </script>
 </body>
 

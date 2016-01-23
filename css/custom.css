@@ -1,0 +1,25 @@
+.hero-feature{padding-left: 10px;padding-right: 10px;margin-bottom: 10px;}
+.bookmark-icon{position: absolute; top: -4px; right: 5px;color:#03a9f4;}
+.check-detail{padding-right: 10px;}
+.book-price{font-size: 22px;font-weight: bold;color:#03a9f4;padding-left: 10px;}
+.shadowed {
+    border-radius: 2px;
+    border: 0;
+    -webkit-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+}
+.thumbnail img{height: 250px;width:auto;}
+.thumbnail p.desc{height: 80px;overflow: hidden;}
+.thumbnail h3{font-size: 13px;height: 30px;font-weight: 900;}
+.thumbnail.selected {background-color: #ddd;}
+
+.detail-sec{text-align: left;background-color: white;position: fixed;height: 80%;width: 49%;overflow: hidden;float: right;right: 20px;}
+.detail-sec h4{font-weight: bold;margin-bottom: 10px;}
+.navbar.navbar-inverse{background-color: black}
+.logo{height: 40px; width: auto;}
+
+.no-padding{padding:0px;}
+
+.rating-icon{color: #F7F700;}
+
+.other-title{font-weight: bold;}

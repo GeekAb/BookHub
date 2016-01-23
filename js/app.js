@@ -7,14 +7,8 @@ var App = {
     apiBase : 'https://capillary.0x10.info/api/',
     authToken : null,
     
-   
     globalPollTime : 30000,
     ajaxRequestArray : {},
-    
-    /*Application url endpoints*/
-    appUrls : {
-        'bookList' : '',
-    },
     
     /*API Url endpoints*/
     apiURLs : {
@@ -111,11 +105,6 @@ var App = {
                 }
                 else if(params !== undefined && params.errorCallback !== undefined)
                     params.errorCallback(xhr.responseJSON, xhr.status)
-                    
-                console.log( "Error: " + errorThrown );
-                console.log( "Status: " + status );
-                console.log( xhr );
-                console.log( xhr.responseJSON)
             },
          
             // code to run regardless of success or failure
