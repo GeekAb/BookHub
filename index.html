@@ -136,7 +136,7 @@
             <div class="thumbnail shadowed">
                 <img src="{{image}}" alt="{{name}}">
                 <div class="caption">
-                    <h3>{{name}}</h3>
+                    <h3>{{name}} <span hidden>{{author}}</span></h3>
                     <div class='row btn-group-sm'>
                         <div class='pull-left book-price'>
                             {{price}}
@@ -156,6 +156,7 @@
     
     <!--Book details template-->
     <script id='bookinfo-details-template' type='x-tmpl-mustache'>
+        <i class="material-icons pull-right detail-close">close</i>
         <h3>{{name}}</h3>
         <h4 class='text-right'>-- {{author}}</h4>
         <div class='text-right'>{{{f_rating}}}</div>

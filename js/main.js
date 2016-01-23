@@ -71,6 +71,13 @@ function bindActions() {
         /*Loading template and pushing data to it*/
         var rendered = Mustache.to_html(template, details);
         $("#book-details").html(rendered);
+        
+        /*Close button action*/
+        $('.detail-close').unbind('click').bind('click', function () {
+            $('.other-details').show();
+            $('.thumbnail').removeClass('selected');
+            $("#book-details").html('');
+        });
     });
 
     /*Search box events*/

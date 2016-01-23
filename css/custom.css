@@ -1,5 +1,6 @@
 .hero-feature{padding-left: 10px;padding-right: 10px;margin-bottom: 10px;}
-.bookmark-icon{position: absolute; top: -4px; right: 5px;color:#03a9f4;}
+.bookmark-icon{position: absolute; top: -4px; right: 5px;color:#03a9f4;cursor: pointer;}
+
 .check-detail{padding-right: 10px;}
 .book-price{font-size: 22px;font-weight: bold;color:#03a9f4;padding-left: 10px;}
 .shadowed {
@@ -19,7 +20,6 @@
 .logo{height: 40px; width: auto;}
 
 .no-padding{padding:0px;}
-
 .rating-icon{color: #F7F700;}
-
 .other-title{font-weight: bold;}
+.detail-close{position: absolute; top: 4px; right: -5px;color:#03a9f4;cursor: pointer;}
