@@ -40,6 +40,9 @@ function bookListSuccess (data) {
     
     /*Setup total Books*/
     App.totalBooks =  window.localStorage['totalBooks'] = data.books.length;
+    $('#total-books').html(App.totalBooks);
+    
+    $('#bookmarked-count').html(App.bookmarked);
         
     /*Page is rendered now
      * Intialize material design elements
@@ -126,6 +129,8 @@ function bindActions() {
         
         window.localStorage['bookmarked'] = App.bookmarked;        
         window.localStorage['bookmarkedList'] = App.bookmarkedList;
+        
+        $('#bookmarked-count').html(App.bookmarked);
     });
     
     /*Filter bookmarked books*/

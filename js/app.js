@@ -53,8 +53,6 @@ var App = {
         if(typeof window.localStorage['bookmarkedList'] != 'undefined' && window.localStorage['bookmarkedList'] != '')
             App.bookmarkedList = window.localStorage['bookmarkedList'].split(',');
         
-        
-        console.log(App.bookmarkedList);
     },
     
     buildUrl: function (caller) {
