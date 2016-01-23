@@ -4,7 +4,7 @@ var App = {
 
     appBase : null,
     appMode : null,
-    apiBase : null,
+    apiBase : 'https://capillary.0x10.info/api/',
     authToken : null,
     
    
@@ -20,7 +20,7 @@ var App = {
     apiURLs : {
         'book' : {
             'list' : {
-                'url' : 'https://capillary.0x10.info/api/books?type=json&query=list_books',
+                'url' : 'books',
                 'method' : 'GET'
             }
         }
@@ -176,7 +176,3 @@ var App = {
     },
 };
 
-// Initialize App
-App.init({
-
-});

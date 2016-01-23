@@ -31,7 +31,15 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <style>
+        .thumbnail img{height: 250px;width:auto;}
+        .thumbnail p.desc{height: 80px;overflow: hidden;}
+        .thumbnail h3{font-size: 15px;height: 60px;font-weight: 900;}
+        
+        .expanded img {width: 300px;height: auto;float: left;padding:10px; padding-right:20px;}
+        .expanded p.desc{height: 100%;overflow: auto; text-align: left;}
+        .expanded h3{font-size: 20px;text-align: left;}
+    </style>
 </head>
 
 <body>
@@ -50,7 +58,7 @@
                 <a class="navbar-brand" href="#">Bookhub</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <div class="navbar-collapse collapse navbar-inverse-collapse">
                 <ul class="nav navbar-nav">
                     <li>
                         <a href="#">About</a>
@@ -62,6 +70,11 @@
                         <a href="#">Contact</a>
                     </li>
                 </ul>
+                <form class="navbar-form navbar-right">
+                  <div class="form-group is-empty">
+                    <input type="text" class="form-control col-md-12" placeholder="Search Books on Name or Author">
+                  <span class="material-input"></span></div>
+                </form>
             </div>
             <!-- /.navbar-collapse -->
         </div>
@@ -92,60 +105,7 @@
         <!-- /.row -->
 
         <!-- Page Features -->
-        <div class="row text-center">
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/800x500" alt="">
-                    <div class="caption">
-                        <h3>Feature Label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/800x500" alt="">
-                    <div class="caption">
-                        <h3>Feature Label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/800x500" alt="">
-                    <div class="caption">
-                        <h3>Feature Label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-3 col-sm-6 hero-feature">
-                <div class="thumbnail">
-                    <img src="http://placehold.it/800x500" alt="">
-                    <div class="caption">
-                        <h3>Feature Label</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-                        <p>
-                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-
+        <div class="row text-center" id='all-books'>
         </div>
         <!-- /.row -->
 
@@ -171,10 +131,78 @@
     <script src="dist/js/ripples.min.js"></script>
     <script src="dist/js/material.min.js"></script>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.2.1/mustache.min.js"></script>
+    
+    <script src="js/app.js"></script>
+    
     <!--Actual code-->
     
     <script>
+        App.init();
         
+        App.callAPI('book-list', '?type=json&query=list_books', 
+                    {
+                        authCheck: false, 
+                        successCallback : bookListSuccess,
+                        errorCallback : bookListFail,
+                    });
+        
+        function bookListSuccess (data) {            
+            /*Loading trips template and rendering data*/
+            var template = $('#bookinfo-template').html();
+            /*Loading template and pushing data to it*/
+            var rendered = Mustache.to_html(template, data);
+            $("#all-books").html(rendered);
+            
+            $.material.init();
+            
+            /*Bind actions*/
+            bindActions();
+        }
+        
+        function bookListFail (data) {
+            console.log(data);
+        }
+        
+        function bindActions() {
+            $('.check-detail').unbind('click').bind('click', function () {
+                var id = $(this).attr('id').split('-')[1];
+                
+                $( "#"+id ).animate({
+                    width: '100%'
+                }, 500, function() {
+                    // Animation complete.
+                    
+                    $( '#'+id +' .thumbnail' ).addClass('expanded');
+                });
+            });
+        }
+    </script>
+    
+    <!--Templates-->
+    <script id="bookinfo-template" type="x-tmpl-mustache">
+        {{#books}}
+        <div class="col-md-3 col-sm-6 hero-feature" id='{{id}}'>
+            <div class="thumbnail">
+                <img src="{{image}}" alt="{{name}}">
+                <div class="caption">
+                    <h3>{{name}}</h3>
+                    <p class='desc'>{{description}} ..</p>
+                    <div class='row btn-group-sm'>
+                        <a href="javascript:void(0)" class="btn btn-info pull-left check-detail" id='detail-{{id}}'>
+                            Check details
+                        </a>
+                        <a href="javascript:void(0)" class="btn btn-default  btn-fab btn-fab-mini pull-right">
+                            <i class="material-icons">grade</i>
+                        </a>
+                    </div>
+                    <div class='row'>
+                        <a href="#" class="btn btn-default">More Info</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/books}}
     </script>
 </body>
 
