@@ -32,6 +32,10 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
+        .hero-feature{padding-left: 10px;padding-right: 10px;margin-bottom: 10px;}
+        .bookmark-icon{position: absolute; top: -4px; right: 5px;color:#03a9f4;}
+        .check-detail{padding-right: 10px;}
+        .book-price{font-size: 22px;font-weight: bold;color:#03a9f4;padding-left: 10px;}
         .shadowed {
             border-radius: 2px;
             border: 0;
@@ -40,11 +44,15 @@
         }
         .thumbnail img{height: 250px;width:auto;}
         .thumbnail p.desc{height: 80px;overflow: hidden;}
-        .thumbnail h3{font-size: 15px;height: 50px;font-weight: 900;}
+        .thumbnail h3{font-size: 13px;height: 30px;font-weight: 900;}
         .thumbnail.selected {background-color: #ddd;}
         
         .detail-sec{text-align: left;background-color: white;position: fixed;height: 80%;width: 49%;overflow: hidden;float: right;right: 20px;}
         .detail-sec h4{font-weight: bold;margin-bottom: 10px;}
+        .navbar.navbar-inverse{background-color: black}
+        .logo{height: 40px; width: auto;}
+        
+        .no-padding{padding:0px;}
     </style>
 </head>
 
@@ -61,7 +69,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Bookhub</a>
+                <a class="navbar-brand" href="#"><img class='logo' src='img/logo.png'></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="navbar-collapse collapse navbar-inverse-collapse">
@@ -78,7 +86,7 @@
                 </ul>
                 <form class="navbar-form navbar-right">
                   <div class="form-group is-empty">
-                    <input type="text" class="form-control col-md-12" placeholder="Search Books on Name or Author">
+                    <input type="text" class="form-control col-md-12 search-book-input" placeholder="Search Name/Author">
                   <span class="material-input"></span></div>
                 </form>
             </div>
@@ -114,9 +122,24 @@
         <div class="row text-center">
             <div class='col-md-6' id='all-books'></div>
             <div class='col-md-6 detail-sec shadowed'>
-                <div class="col-md-12" id="book-details">
+                <!--Section will show full book details-->
+                <div class="col-md-12" id="book-details"></div>
+                
+                <!--Other website related information-->
+                <div class='other-details'>
+                    <div class="col-md-6">
+                        <h4>What is BookHub?</h4>
+                    </div>
+                    <div class="col-md-6">
+                        <a href="javascript:void(0)" class="btn btn-raised btn-primary pull-right">Show Bookmarked Books</a>
+                    </div>
                     
+                    <div class="col-md-12">
+                        BookHub is a simplified way to search Books!
+                    </div>
                 </div>
+                <!--Other detail section ends here-->
+                
             </div>
         </div>
         <!-- /.row -->
@@ -196,26 +219,39 @@
                
             });
         }
+        
+        function searchBooks (value) {
+            $(".book-element").each(function () {
+                if ($(this).text().search(value) > -1) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
     </script>
     
     <!--Templates-->
     <script id='bookinfo-template' type='x-tmpl-mustache'>
         {{#books}}
-        <div class="col-md-6 col-sm-12 hero-feature " id='{{id}}' data-details='{{detail}}'>
+        <div class="col-md-6 col-sm-12 hero-feature book-element" id='{{id}}' data-details='{{detail}}'>
             <div class="thumbnail shadowed">
                 <img src="{{image}}" alt="{{name}}">
                 <div class="caption">
                     <h3>{{name}}</h3>
                     <div class='row btn-group-sm'>
-                        <a href="javascript:void(0)" class="btn btn-info pull-left check-detail" id='detail-{{id}}'>
+                        <div class='pull-left book-price'>
+                            {{price}}
+                        </div>
+                        <a href="javascript:void(0)" class="btn btn-info pull-right check-detail" id='detail-{{id}}'>
                             Check details
-                        </a>
-                        <a href="javascript:void(0)" class="btn btn-default  btn-fab btn-fab-mini pull-right">
-                            <i class="material-icons">grade</i>
                         </a>
                     </div>
                 </div>
             </div>
+            <a class='bookmark-icon'>
+                <i class="material-icons">turned_in_not</i>
+            </a>
         </div>
         {{/books}}
     </script>
