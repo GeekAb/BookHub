@@ -32,13 +32,19 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
+        .shadowed {
+            border-radius: 2px;
+            border: 0;
+            -webkit-box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+            box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.12), 0 1px 6px 0 rgba(0, 0, 0, 0.12);
+        }
         .thumbnail img{height: 250px;width:auto;}
         .thumbnail p.desc{height: 80px;overflow: hidden;}
-        .thumbnail h3{font-size: 15px;height: 60px;font-weight: 900;}
+        .thumbnail h3{font-size: 15px;height: 50px;font-weight: 900;}
+        .thumbnail.selected {background-color: #ddd;}
         
-        .expanded img {width: 300px;height: auto;float: left;padding:10px; padding-right:20px;}
-        .expanded p.desc{height: 100%;overflow: auto; text-align: left;}
-        .expanded h3{font-size: 20px;text-align: left;}
+        .detail-sec{text-align: left;background-color: white;position: fixed;height: 80%;width: 49%;overflow: hidden;float: right;right: 20px;}
+        .detail-sec h4{font-weight: bold;margin-bottom: 10px;}
     </style>
 </head>
 
@@ -99,13 +105,19 @@
         <!-- Title -->
         <div class="row">
             <div class="col-lg-12">
-                <h3>Latest Features</h3>
+                <h3>All Books</h3>
             </div>
         </div>
         <!-- /.row -->
 
         <!-- Page Features -->
-        <div class="row text-center" id='all-books'>
+        <div class="row text-center">
+            <div class='col-md-6' id='all-books'></div>
+            <div class='col-md-6 detail-sec shadowed'>
+                <div class="col-md-12" id="book-details">
+                    
+                </div>
+            </div>
         </div>
         <!-- /.row -->
 
@@ -147,7 +159,11 @@
                         errorCallback : bookListFail,
                     });
         
-        function bookListSuccess (data) {            
+        function bookListSuccess (data) {
+            
+            data.detail = function () {
+                return JSON.stringify(this);
+            }
             /*Loading trips template and rendering data*/
             var template = $('#bookinfo-template').html();
             /*Loading template and pushing data to it*/
@@ -166,28 +182,30 @@
         
         function bindActions() {
             $('.check-detail').unbind('click').bind('click', function () {
-                var id = $(this).attr('id').split('-')[1];
                 
-                $( "#"+id ).animate({
-                    width: '100%'
-                }, 500, function() {
-                    // Animation complete.
-                    
-                    $( '#'+id +' .thumbnail' ).addClass('expanded');
-                });
+                var id = $(this).attr('id').split('-')[1];
+                $('.thumbnail').removeClass('selected');
+                $('#'+id+' .thumbnail').addClass('selected');
+                
+                var details = $('#'+id).data('details');
+                
+                var template = $('#bookinfo-details-template').html();
+                /*Loading template and pushing data to it*/
+                var rendered = Mustache.to_html(template, details);
+                $("#book-details").html(rendered);
+               
             });
         }
     </script>
     
     <!--Templates-->
-    <script id="bookinfo-template" type="x-tmpl-mustache">
+    <script id='bookinfo-template' type='x-tmpl-mustache'>
         {{#books}}
-        <div class="col-md-3 col-sm-6 hero-feature" id='{{id}}'>
-            <div class="thumbnail">
+        <div class="col-md-6 col-sm-12 hero-feature " id='{{id}}' data-details='{{detail}}'>
+            <div class="thumbnail shadowed">
                 <img src="{{image}}" alt="{{name}}">
                 <div class="caption">
                     <h3>{{name}}</h3>
-                    <p class='desc'>{{description}} ..</p>
                     <div class='row btn-group-sm'>
                         <a href="javascript:void(0)" class="btn btn-info pull-left check-detail" id='detail-{{id}}'>
                             Check details
@@ -196,13 +214,15 @@
                             <i class="material-icons">grade</i>
                         </a>
                     </div>
-                    <div class='row'>
-                        <a href="#" class="btn btn-default">More Info</a>
-                    </div>
                 </div>
             </div>
         </div>
         {{/books}}
+    </script>
+    
+    <script id='bookinfo-details-template' type='x-tmpl-mustache'>
+        <h4>{{author}}</h4>
+        <p>{{description}}</p>        
     </script>
 </body>
 
