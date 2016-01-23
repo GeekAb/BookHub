@@ -26,6 +26,9 @@ function bookListSuccess (data) {
 
     /*Bind actions related to page*/
     bindActions();
+    
+    /*Setup total Books*/
+    App.totalBooks =  window.localStorage['totalBooks'] = data.books.length;
         
     /*Page is rendered now
      * Intialize material design elements
@@ -89,6 +92,18 @@ function bindActions() {
     });
 
     $('input.search-book-input').keyup(function() { searchBooks($(this).val())});
+    
+    /*Bookmark action setup*/
+    $('.bookmark-icon').unbind('click').bind('click', function (){
+        if($(this).hasClass('active'))
+            App.bookmarked = App.bookmarked - 1;
+        else {
+            App.bookmarked = App.bookmarked + 1;
+            $(this).addClass('active');
+        }
+        
+        window.localStorage['bookmarked'] = App.bookmarked;
+    });
 }
 
 /*Search implementation on page

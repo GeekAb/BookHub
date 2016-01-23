@@ -10,6 +10,17 @@ var App = {
     globalPollTime : 30000,
     ajaxRequestArray : {},
     
+    lastVisited : '',
+    totalBooks : 0,
+    bookmarked : 0,
+    
+    monthNames : [
+          "January", "February", "March",
+          "April", "May", "June", "July",
+          "August", "September", "October",
+          "November", "December"
+        ],
+    
     /*API Url endpoints*/
     apiURLs : {
         'book' : {
@@ -22,9 +33,23 @@ var App = {
 
     /*Initialize values and parameters*/
     init: function( options ) {
-        
+        App.setupLocalStorage();
     },
-
+    
+    setupLocalStorage : function () {
+        
+        if(typeof window.localStorage['bookmarked'] != 'undefined' && window.localStorage['bookmarked'] != 0)
+            App.bookmarked =  window.localStorage['bookmarked'];
+        else
+            window.localStorage['bookmarked'] = App.bookmarked;
+        
+        if(typeof window.localStorage['lastVisited'] != 'undefined' && window.localStorage['lastVisited'] != '')
+            $('.lastvisited small').html('Last visited on '+window.localStorage['lastVisited']);
+        
+        var temp = new Date();
+        window.localStorage['lastVisited'] = temp.getDate() + ' ' + App.monthNames[temp.getMonth()]+ ' ' + temp.getFullYear();
+    },
+    
     buildUrl: function (caller) {
         var temp = caller.split('-');
         if(temp.length > 1) {
