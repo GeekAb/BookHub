@@ -86,7 +86,7 @@
                         <h4>What is BookHub?</h4>
                     </div>
                     <div class="col-md-6">
-                        <a href="javascript:void(0)" class="btn btn-raised btn-primary pull-right">Show Bookmarked Books</a>
+                        <a href="javascript:void(0)" class="btn btn-raised btn-primary pull-right" id='only-bookmarked'>Show Bookmarked Books</a>
                     </div>
                     
                     <div class="col-md-12">
@@ -157,8 +157,13 @@
                     </div>
                 </div>
             </div>
-            <a class='bookmark-icon'>
-                <i class="material-icons">turned_in_not</i>
+            <a class='bookmark-icon {{isBookmarked}}'>
+                {{#isBookmarked}}
+                    <i class="material-icons">turned_in</i>    
+                {{/isBookmarked}}
+                {{^isBookmarked}}
+                    <i class="material-icons">turned_in_not</i>
+                {{/isBookmarked}}
             </a>
         </div>
         {{/books}}

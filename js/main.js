@@ -18,6 +18,17 @@ function bookListSuccess (data) {
     data.detail = function () {
         return JSON.stringify(this);
     }
+    
+    /*Decorator to decide if its bookmarked or not
+     * == is used on purpose to ignore type checking
+     * */
+    data.isBookmarked = function () {
+        if(App.bookmarkedList && App.bookmarkedList[this.id - 1] == 1)
+            return 'active';
+        
+        return '';
+    }
+    
     /*Loading trips template and rendering data*/
     var template = $('#bookinfo-template').html();
     /*Loading template and pushing data to it*/
@@ -95,14 +106,32 @@ function bindActions() {
     
     /*Bookmark action setup*/
     $('.bookmark-icon').unbind('click').bind('click', function (){
-        if($(this).hasClass('active'))
+        if($(this).hasClass('active')) {
+            
+            $(this).removeClass('active');
             App.bookmarked = App.bookmarked - 1;
+            
+            App.bookmarkedList[$(this).parent().attr('id') - 1] = 0;
+            
+            $(this).children('i').html('turned_in_not');
+        }
         else {
             App.bookmarked = App.bookmarked + 1;
             $(this).addClass('active');
+            
+            App.bookmarkedList[$(this).parent().attr('id') - 1] = 1;       
+            
+            $('.bookmark-icon i').html('turned_in');
         }
         
-        window.localStorage['bookmarked'] = App.bookmarked;
+        window.localStorage['bookmarked'] = App.bookmarked;        
+        window.localStorage['bookmarkedList'] = App.bookmarkedList;
+    });
+    
+    /*Filter bookmarked books*/
+    $('#only-bookmarked').unbind('click').bind('click', function () {
+        $('.bookmark-icon').parent().hide();
+        $('.bookmark-icon.active').parent().show();
     });
 }
 

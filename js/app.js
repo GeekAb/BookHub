@@ -13,6 +13,7 @@ var App = {
     lastVisited : '',
     totalBooks : 0,
     bookmarked : 0,
+    bookmarkedList : [],
     
     monthNames : [
           "January", "February", "March",
@@ -39,7 +40,7 @@ var App = {
     setupLocalStorage : function () {
         
         if(typeof window.localStorage['bookmarked'] != 'undefined' && window.localStorage['bookmarked'] != 0)
-            App.bookmarked =  window.localStorage['bookmarked'];
+            App.bookmarked = parseInt(window.localStorage['bookmarked']);
         else
             window.localStorage['bookmarked'] = App.bookmarked;
         
@@ -48,6 +49,12 @@ var App = {
         
         var temp = new Date();
         window.localStorage['lastVisited'] = temp.getDate() + ' ' + App.monthNames[temp.getMonth()]+ ' ' + temp.getFullYear();
+        
+        if(typeof window.localStorage['bookmarkedList'] != 'undefined' && window.localStorage['bookmarkedList'] != '')
+            App.bookmarkedList = window.localStorage['bookmarkedList'].split(',');
+        
+        
+        console.log(App.bookmarkedList);
     },
     
     buildUrl: function (caller) {
